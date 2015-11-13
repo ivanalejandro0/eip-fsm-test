@@ -111,7 +111,7 @@ def main():
     dotdata = generate_dot(workflows.items())
 
     def render_output(graph):
-        filename, format = 'test', 'png'
+        filename, format = 'graphs', 'png'
 
         graph.engine = 'dot'
         graph.format = format
