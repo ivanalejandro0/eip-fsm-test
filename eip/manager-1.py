@@ -3,7 +3,7 @@
 
 import random
 
-from .machine import EIPMachine
+from .eip_machine import EIPMachine
 
 
 def random_failure(name):

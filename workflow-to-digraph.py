@@ -96,8 +96,9 @@ def generate_dot(workflows):
     return result
 
 
-from eip.machine import EIPWorkflow
-from eip.firewall_machine import FirewallWorkflow
+from eip.eip_machine import EIPWorkflow
+# from eip.firewall_machine import FirewallWorkflow
+from eip.firewall.machine import FirewallWorkflow
 from eip.vpn_machine import VPNWorkflow
 
 
