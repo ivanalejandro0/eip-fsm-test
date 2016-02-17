@@ -1,13 +1,11 @@
 #!/usr/bin/env python
 # encoding: utf-8
 """
-A Finite State Machine implementation for the Firewall service.
+A Finite State Machine for the VPN service.
 """
-# import time
-
 import xworkflows
 
-from .workflow import FirewallWorkflow
+from .workflow import VPNWorkflow
 
 
 def random_failure(name):
@@ -16,22 +14,22 @@ def random_failure(name):
         raise Exception("{0}: some imaginary failure.".format(name))
 
 
-class FirewallMachine(xworkflows.WorkflowEnabled):
+class VPNMachine(xworkflows.WorkflowEnabled):
     """
     The actual state machine to be used to do the transitions and check states.
     """
-    state = FirewallWorkflow()
+    state = VPNWorkflow()
 
     # @xworkflows.transition()
     # def start(self):
-    #     random_failure("Firewall - start")
+    #     random_failure("VPN - start")
     #     time.sleep(1)
     #     self.start_ok()
     #
     # @xworkflows.transition()
     # def stop(self):
-    #     random_failure("Firewall - stop")
+    #     random_failure("VPN - stop")
     #
     # @xworkflows.transition()
     # def cancel(self):
-    #     random_failure("Firewall - cancel")
+    #     random_failure("VPN - cancel")
