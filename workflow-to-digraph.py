@@ -96,15 +96,14 @@ def generate_dot(workflows):
     return result
 
 
-from eip.eip_machine import EIPWorkflow
-# from eip.firewall_machine import FirewallWorkflow
-from eip.firewall.machine import FirewallWorkflow
-from eip.vpn_machine import VPNWorkflow
+# from eip.eip_machine import EIPWorkflow
+from eip.firewall.workflow import FirewallWorkflow
+from eip.vpn.workflow import VPNWorkflow
 
 
 def main():
     workflows = {
-        'eip (vpn+firewall)': EIPWorkflow,
+        # 'eip (vpn+firewall)': EIPWorkflow,
         'vpn': VPNWorkflow,
         'firewall': FirewallWorkflow
     }
