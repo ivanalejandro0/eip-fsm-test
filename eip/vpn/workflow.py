@@ -25,11 +25,11 @@ class VPNWorkflow(xworkflows.Workflow):
     transitions = (
         ('start', 'off', 'starting'),
 
-        ('start_ok', 'starting', 'on'),
+        ('start_ok', ('starting', 'retrying'), 'on'),
         ('start_cancel', 'starting', 'stopping'),
         ('start_error', 'starting', 'retrying'),
         ('start_retry_error', 'retrying', 'retrying'),
-        ('start_failed', 'retrying', 'error'),
+        ('start_failed', 'retrying', 'failed'),
 
         ('stop', 'on', 'stopping'),
 

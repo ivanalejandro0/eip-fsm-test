@@ -26,9 +26,10 @@ class FirewallWorkflow(xworkflows.Workflow):
         ('start', 'off', 'starting'),
 
         ('start_ok', ('starting', 'retrying'), 'on'),
-        ('start_error', ('starting', 'retrying'), 'retrying'),
+        ('start_error', 'starting', 'retrying'),
         ('start_cancel', 'starting', 'stopping'),
-        ('failed', 'retrying', 'error'),
+        ('start_retry_error', 'retrying', 'retrying'),
+        ('start_failed', 'retrying', 'failed'),
 
         ('stop', 'on', 'stopping'),
 

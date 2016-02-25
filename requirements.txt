@@ -1,2 +1,3 @@
 xworkflows
 graphviz
+colorama

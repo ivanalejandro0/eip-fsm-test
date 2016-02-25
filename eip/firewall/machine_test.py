@@ -16,6 +16,11 @@ def random_failure(name):
         raise Exception("{0}: some imaginary failure.".format(name))
 
 
+# TODO think
+# vpn/firewall stuff (the actual code) on states or transitions?
+# maybe actions on states and notifications on transitions
+
+
 class FirewallMachine(xworkflows.WorkflowEnabled):
     """
     The actual state machine to be used to do the transitions and check states.
@@ -41,6 +46,7 @@ class FirewallMachine(xworkflows.WorkflowEnabled):
         self._retry_count = 0
 
     def _start_firewall(self):
+        print "[firewall] RUNNING FIREWALL MAGIC..."
         time.sleep(1)
         try:
             random_failure("firewall - start")
@@ -48,14 +54,17 @@ class FirewallMachine(xworkflows.WorkflowEnabled):
         except:
             return False  # firewall not started
 
+    def _print_state(self):
+        print "[firewall] entered: '{0}'".format(self.state.name)
+
     @xworkflows.transition()
     def start(self):
-        print "[firewall] will try to start"
-        self._firewall_started = self._start_firewall()
+        print "[firewall] start transition"
 
     @xworkflows.on_enter_state('starting')
     def starting(self, *args, **kwargs):
-        print "[firewall] entered: '{0}'".format(self.state.name)
+        self._print_state()
+        self._firewall_started = self._start_firewall()
         if self._firewall_started:
             self.start_ok()
         else:
@@ -63,11 +72,11 @@ class FirewallMachine(xworkflows.WorkflowEnabled):
 
     @xworkflows.on_enter_state('on')
     def on_on(self, *args, **kwargs):
-        print "[firewall] entered: '{0}'".format(self.state.name)
+        self._print_state()
 
     @xworkflows.transition()
     def start_error(self):
-        time.sleep(1)
+        self._start_firewall()
 
     @xworkflows.on_enter_state('retrying')
     def on_retrying(self, *args, **kwargs):
@@ -75,8 +84,9 @@ class FirewallMachine(xworkflows.WorkflowEnabled):
         import random
         if random.randint(0, 2) != 0:
             if self._retry_count < 3:
-                print "[firewall] retrying {0} of {1}".format(self._retry_count+1, 3)
                 self._retry_count += 1
+                print "[firewall] retrying, attempt {0} of {1}".format(
+                    self._retry_count, 3)
                 self.start_error()
             else:
                 self.failed()
