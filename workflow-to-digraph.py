@@ -40,6 +40,8 @@ def workflow_to_digraph(name, workflow):
         name="cluster_%s" % (name, ),
         graph_attr={
             'label': "%s" % (name, ),
+            'labelloc': 'top',
+            'labeljust': 'left',
         },
     )
 
