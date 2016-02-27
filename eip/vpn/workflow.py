@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf-8
 """
-A Finite State Machine for the VPN service.
+Finite State Machine worlflow definition for the VPN service.
 """
 import xworkflows
 
@@ -14,22 +14,21 @@ class VPNWorkflow(xworkflows.Workflow):
     states = (
         ('off', "The VPN is off"),
         ('on', "The VPN is on"),
-        ('error', "Fatal error, can't recover."),
+        ('error', "Can't start VPN."),
 
         ('starting', "OpenVPN is starting."),
         ('stopping', "OpenVPN is stopping."),
         ('retrying', "Retrying OpenVPN start."),
-        ('failed', "Gave up on OpenVPN, may be tried again."),
     )
 
     transitions = (
         ('start', 'off', 'starting'),
 
         ('start_ok', ('starting', 'retrying'), 'on'),
-        ('start_cancel', 'starting', 'stopping'),
         ('start_error', 'starting', 'retrying'),
+        ('start_cancel', 'starting', 'stopping'),
         ('start_retry_error', 'retrying', 'retrying'),
-        ('start_failed', 'retrying', 'failed'),
+        ('start_failed', 'retrying', 'error'),
 
         ('stop', 'on', 'stopping'),
 
