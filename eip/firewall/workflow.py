@@ -14,12 +14,11 @@ class FirewallWorkflow(xworkflows.Workflow):
     states = (
         ('off', "The Firewall is off"),
         ('on', "The Firewall is on"),
-        ('error', "Fatal error, can't recover."),
+        ('error', "Can't start firewall."),
 
         ('starting', "Firewall is starting."),
         ('stopping', "Firewall is stopping."),
         ('retrying', "Retrying Firewall start."),
-        ('failed', "Gave up on Firewall, may be tried again."),
     )
 
     transitions = (
@@ -29,7 +28,7 @@ class FirewallWorkflow(xworkflows.Workflow):
         ('start_error', 'starting', 'retrying'),
         ('start_cancel', 'starting', 'stopping'),
         ('start_retry_error', 'retrying', 'retrying'),
-        ('start_failed', 'retrying', 'failed'),
+        ('start_failed', 'retrying', 'error'),
 
         ('stop', 'on', 'stopping'),
 
