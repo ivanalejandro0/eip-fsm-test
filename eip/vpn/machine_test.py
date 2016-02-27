@@ -23,6 +23,7 @@ class VPNMachine(xworkflows.WorkflowEnabled):
         self._vpn = VPNManager()
         self._retry_count = 0
         self.MAX_RETRIES = retries
+        self._callbacks = {}
 
     # ---------- helper methods ----------
     def _print_state(self, color=None):
@@ -37,9 +38,18 @@ class VPNMachine(xworkflows.WorkflowEnabled):
         if color is not None:
             print color + "[vpn] [T] triggered: '{0}'".format(
                 name) + Fore.RESET
-            return
+        else:
+            print "[vpn] [T] triggered: '{0}'".format(name)
 
-        print "[vpn] [T] triggered: '{0}'".format(name)
+        callback = self._callbacks.pop(name, None)
+        if callback is not None:
+            callback()
+
+    def set_callback(self, name, callme):
+        if not callable(callme):
+            raise TypeError("Argument should be callable")
+
+        self._callbacks[name] = callme
 
     # ---------- transitions: log/notify here ----------
     @xworkflows.transition()

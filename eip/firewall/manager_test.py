@@ -6,7 +6,7 @@ import time
 
 def random_failure(name):
     import random
-    if random.randint(0, 9) != 0:
+    if random.randint(0, 1) != 0:
         raise Exception("{0}: some imaginary failure.".format(name))
 
 

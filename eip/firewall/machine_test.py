@@ -23,6 +23,7 @@ class FirewallMachine(xworkflows.WorkflowEnabled):
         self._firewall = FirewallManager()
         self._retry_count = 0
         self.MAX_RETRIES = retries
+        self._callbacks = {}
 
     # ---------- helper methods ----------
     def _print_state(self, color=None):
@@ -37,9 +38,18 @@ class FirewallMachine(xworkflows.WorkflowEnabled):
         if color is not None:
             print color + "[firewall] [T] triggered: '{0}'".format(
                 name) + Fore.RESET
-            return
+        else:
+            print "[firewall] [T] triggered: '{0}'".format(name)
 
-        print "[firewall] [T] triggered: '{0}'".format(name)
+        callback = self._callbacks.pop(name, None)
+        if callback is not None:
+            callback()
+
+    def set_callback(self, name, callme):
+        if not callable(callme):
+            raise TypeError("Argument should be callable")
+
+        self._callbacks[name] = callme
 
     # ---------- transitions: log/notify here ----------
     @xworkflows.transition()
