@@ -13,6 +13,7 @@ _signals = {
     "initialization_completed": "the_qt_signaler.eip_connected",
 }
 
+# event triggered as a state change
 _events = {
     'NETWORK_UNREACHABLE': ('Network is unreachable (code=101)',),
     'PROCESS_RESTART_TLS': ("SIGTERM[soft,tls-error]",),
